@@ -11,7 +11,7 @@ Here are some ideas to get you started:
 ### 我的技术栈：
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=apple,ps,c,cpp,github,gmail,instagram,linux,md" />
+    <img src="https://skillicons.dev/icons?i=apple,ps,c,cpp,github,gmail,instagram,linux,md,idea" />
   </a>
 </p>
 
