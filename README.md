@@ -8,9 +8,10 @@ Here are some ideas to get you started:
 - 🤔 I’m looking for help with sutdying
 - 💬 Ask me about music
 
+### 我的技术栈：
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=apple,ps" />
+    <img src="https://skillicons.dev/icons?i=apple,ps,c,cpp,github,gmail,instagram,linux,md" />
   </a>
 </p>
 
