@@ -15,4 +15,6 @@ Here are some ideas to get you started:
   </a>
 </p>
 
+https://api.moedog.org/count/@he-zi-qiang.readme
+
 ![](./profile-3d-contrib/profile-night-rainbow.svg)
