@@ -14,7 +14,7 @@
 ### :hammer:  Skills and Tools
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=apple,ps,c,cpp,github,gmail,instagram,linux,md,idea" />
+    <img src="https://skillicons.dev/icons?i=apple,ps,c,github,gmail,instagram,linux,md,idea" />
   </a>
 </p>
 
