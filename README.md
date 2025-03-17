@@ -15,6 +15,24 @@ Here are some ideas to get you started:
   </a>
 </p>
 
+<div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 10px;">
+  <img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/cpp-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/redux-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/eslint-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/webpack-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/python-icon.svg" alt="icon" width="59" height="59" />
+</div>
+  <div style="display: flex; align-items: flex-start;">
+  <img src="https://techstack-generator.vercel.app/django-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/github-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/docker-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/kubernetes-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="59" height="59" />
+  <img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="59" height="59" />
+</div>
+
 ![](./profile-3d-contrib/profile-night-rainbow.svg)
 
 ### :eyes:  Visits
