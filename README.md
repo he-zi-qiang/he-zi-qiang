@@ -2,10 +2,6 @@
  
   [![Typing SVG](https://readme-typing-svg.demolab.com?font=Robot&size=30&pause=1000&color=0C5830F3&center=true&width=435&lines=Welcome+!;Here+is+Alex(He+Ziqiang);Nice+to+see+you+!)](https://git.io/typing-svg)
   
-  
-
-
-Here are some ideas to get you started:
 
 - 🔭 I’m currently working on DJTU
 - 🌱 I’m currently learning software
@@ -47,4 +43,6 @@ Here are some ideas to get you started:
 
  ![Typing_SVG](https://api.moedog.org/count/@he-zi-qiang.readme)
 
-  
+
+  <img src="https://github.com/he-zi-qiang/he-zi-qiang/blob/main/icon.png" /></div>
+
