@@ -1,6 +1,7 @@
-
-
+ <div  align="center";>
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Robot&size=30&pause=1000&color=0C5830F3&center=true&width=435&lines=Welcome+!;Here+is+Alex(He+Ziqiang);Nice+to+see+you+!)](https://git.io/typing-svg)
+  </div>
+
 
 Here are some ideas to get you started:
 
