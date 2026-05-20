@@ -4,6 +4,9 @@ height = 300
 title = "Claude Max"
 footer = "powered by 何梓强"
 serial = "42000E43"
+# Drop a PNG here and the renderer pastes it top-left as the mascot.
+# Leave empty to use the built-in red sparkle placeholder.
+mascot_path = "assets/mascot.png"
 
 [fonts]
 # macOS defaults — adjust if elsewhere

@@ -8,7 +8,7 @@ import tomllib
 from datetime import datetime
 from pathlib import Path
 
-from render import Theme, render
+from render import Theme, render, split_bw_red
 from usage import get_usage
 
 
@@ -42,6 +42,7 @@ def main() -> int:
         title=display.get("title", "Claude Max"),
         footer=display.get("footer", "powered by 何梓强"),
         serial=display.get("serial", "42000E43"),
+        mascot_path=display.get("mascot_path", ""),
         cjk_font=fonts.get("cjk", Theme.cjk_font),
         mono_font=fonts.get("mono", Theme.mono_font),
     )
@@ -57,7 +58,15 @@ def main() -> int:
 
     args.save.parent.mkdir(parents=True, exist_ok=True)
     img.save(args.save)
-    print(f"Rendered {img.size[0]}x{img.size[1]} -> {args.save}")
+    print(f"Rendered {img.size[0]}x{img.size[1]} (RGB) -> {args.save}")
+
+    # Also write split BW + Red channels — these are what BWR e-paper firmware needs.
+    bw_path = args.save.with_name(args.save.stem + "_bw.png")
+    red_path = args.save.with_name(args.save.stem + "_red.png")
+    bw, red = split_bw_red(img)
+    bw.save(bw_path)
+    red.save(red_path)
+    print(f"  channels: {bw_path.name}, {red_path.name}")
 
     if args.push:
         mac = cfg.get("ble", {}).get("mac", "")
