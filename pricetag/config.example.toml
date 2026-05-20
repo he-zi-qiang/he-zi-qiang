@@ -1,0 +1,22 @@
+[display]
+width = 400
+height = 300
+title = "Claude Max"
+footer = "powered by 何梓强"
+serial = "42000E43"
+
+[fonts]
+# macOS defaults — adjust if elsewhere
+cjk = "/System/Library/Fonts/PingFang.ttc"
+mono = "/System/Library/Fonts/Menlo.ttc"
+
+[usage]
+# How to get usage data:
+#   "ccusage" - shell out to `npx ccusage statusline --json`
+#   "mock"    - use example values for layout testing
+source = "ccusage"
+
+[ble]
+# Fill in after flashing custom firmware; leave empty to disable BLE push.
+# Find this in the WebFlasher UI (atc1441) or in NFC NDEF after pairing.
+mac = ""

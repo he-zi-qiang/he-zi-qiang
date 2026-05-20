@@ -1,0 +1,79 @@
+"""Entry point: render Claude usage and (eventually) push it to the tag."""
+
+from __future__ import annotations
+
+import argparse
+import sys
+import tomllib
+from datetime import datetime
+from pathlib import Path
+
+from render import Theme, render
+from usage import get_usage
+
+
+def load_config(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    with path.open("rb") as f:
+        return tomllib.load(f)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Drive a Hanshow Nebular price tag with Claude usage.")
+    parser.add_argument("--config", type=Path, default=Path(__file__).parent / "config.toml")
+    parser.add_argument("--mock", action="store_true", help="Use mock usage data (no ccusage call).")
+    parser.add_argument("--save", type=Path, default=Path(__file__).parent / "out" / "tag.png",
+                        help="Where to write the rendered PNG.")
+    parser.add_argument("--push", action="store_true", help="Push to the tag over BLE (requires flashed firmware).")
+    args = parser.parse_args()
+
+    cfg = load_config(args.config)
+    if not cfg:
+        example = Path(__file__).parent / "config.example.toml"
+        print(f"No config.toml found; using defaults. Copy {example.name} -> config.toml to customize.")
+        cfg = load_config(example)
+
+    display = cfg.get("display", {})
+    fonts = cfg.get("fonts", {})
+    theme = Theme(
+        width=display.get("width", 400),
+        height=display.get("height", 300),
+        title=display.get("title", "Claude Max"),
+        footer=display.get("footer", "powered by 何梓强"),
+        serial=display.get("serial", "42000E43"),
+        cjk_font=fonts.get("cjk", Theme.cjk_font),
+        mono_font=fonts.get("mono", Theme.mono_font),
+    )
+
+    source = "mock" if args.mock else cfg.get("usage", {}).get("source", "ccusage")
+    try:
+        usage = get_usage(source)
+    except RuntimeError as e:
+        print(f"[!] {e}", file=sys.stderr)
+        return 2
+
+    img = render(usage, theme)
+
+    args.save.parent.mkdir(parents=True, exist_ok=True)
+    img.save(args.save)
+    print(f"Rendered {img.size[0]}x{img.size[1]} -> {args.save}")
+
+    if args.push:
+        mac = cfg.get("ble", {}).get("mac", "")
+        if not mac:
+            print("[!] Set [ble].mac in config.toml first.", file=sys.stderr)
+            return 3
+        from ble import push_blocking
+        try:
+            push_blocking(img, mac)
+            print(f"Pushed to {mac}.")
+        except NotImplementedError as e:
+            print(f"[!] {e}", file=sys.stderr)
+            return 4
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
