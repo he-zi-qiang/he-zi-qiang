@@ -63,7 +63,7 @@ examples/preview.png   # 渲染预览
 
 1. **刷固件**（你已下单工具，等货）
 2. **拆机拍 PCB 照片** → 我帮你标 SWS / NRST / GND
-3. **焊飞线 → Chrome 跑 [UART Flasher](https://atc1441.github.io/ATC_TLSR_Paper_UART_Flasher.html) → 刷 OEPL/BWR 固件**
+3. **焊飞线 → Chrome 跑 [UART Flasher](https://atc1441.github.io/ATC_TLSR_Paper_UART_Flasher.html) → 刷 OEPL/BWR 固件**（接线见 `HARDWARE.md`）
 4. **拿到 BLE MAC**，填 `config.toml` 的 `[ble].mac`
 5. **照 atc1441 的 `Image_Uploader.html` 把 BLE 协议补到 `ble.py`**
 6. **可选**：起个 launchd 每 10 分钟跑一次
