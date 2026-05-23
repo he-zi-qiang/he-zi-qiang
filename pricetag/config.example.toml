@@ -9,7 +9,9 @@ serial = "42000E43"
 mascot_path = "assets/mascot.png"
 
 [fonts]
-# macOS defaults — adjust if elsewhere
+# Default is macOS. Set Windows / Linux paths explicitly if needed:
+#   Windows: cjk = "C:/Windows/Fonts/msyh.ttc", mono = "C:/Windows/Fonts/consola.ttf"
+#   Linux:   cjk = "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"
 cjk = "/System/Library/Fonts/PingFang.ttc"
 mono = "/System/Library/Fonts/Menlo.ttc"
 

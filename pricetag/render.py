@@ -49,10 +49,18 @@ def render(usage: Usage, theme: Theme) -> Image.Image:
     d = ImageDraw.Draw(img)
 
     cjk_fallbacks = (
+        # Windows
+        r"C:\Windows\Fonts\msyh.ttc",
+        r"C:\Windows\Fonts\msyhbd.ttc",
+        # Linux
         "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
         "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     )
     mono_fallbacks = (
+        # Windows
+        r"C:\Windows\Fonts\consola.ttf",
+        r"C:\Windows\Fonts\consolab.ttf",
+        # Linux
         "/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
     )
