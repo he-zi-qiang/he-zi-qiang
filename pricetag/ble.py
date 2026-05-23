@@ -46,7 +46,7 @@ async def push(img: "Image", mac: str, *, timeout: float = 30.0) -> None:
     """Connect to the tag over BLE and upload the image. Not yet implemented."""
     raise NotImplementedError(
         "BLE push not wired up yet. Once you flash the tag with atc1441's firmware:\n"
-        "  1) Open https://atc1441.github.io/ATC_TLSR_Paper_Upload.html in Chrome\n"
+        "  1) Open https://atc1441.github.io/ATC_TLSR_Paper_Image_Upload.html in Chrome\n"
         "  2) Pair to your tag (MAC " + mac + ")\n"
         "  3) Upload the PNG produced by `python main.py --mock --save out.png`\n"
         "Once that works end-to-end, we'll port the JS protocol into this file."
