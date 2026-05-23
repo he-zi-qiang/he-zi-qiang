@@ -21,7 +21,9 @@ mono = "/System/Library/Fonts/Menlo.ttc"
 #   "mock"    - use example values for layout testing
 source = "ccusage"
 
-[ble]
-# Fill in after flashing custom firmware; leave empty to disable BLE push.
-# Find this in the WebFlasher UI (atc1441) or in NFC NDEF after pairing.
-mac = ""
+[oepl]
+# Fill these in after the ESP32-S3 AP is up and the tag is paired.
+# ap_url:  the OEPL AP's IP, visible on its web UI / your router
+# tag_mac: shown in the OEPL AP web UI under "tags" (16 hex chars, no separators)
+ap_url = "http://192.168.1.42"
+tag_mac = ""

@@ -25,7 +25,8 @@ def main() -> int:
     parser.add_argument("--mock", action="store_true", help="Use mock usage data (no ccusage call).")
     parser.add_argument("--save", type=Path, default=Path(__file__).parent / "out" / "tag.png",
                         help="Where to write the rendered PNG.")
-    parser.add_argument("--push", action="store_true", help="Push to the tag over BLE (requires flashed firmware).")
+    parser.add_argument("--push", action="store_true", help="Push to the tag via the OEPL AP (requires flashed firmware + ESP32 AP).")
+    parser.add_argument("--dither", action="store_true", help="Tell the AP to dither the image (better for photos, worse for text).")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -69,15 +70,17 @@ def main() -> int:
     print(f"  channels: {bw_path.name}, {red_path.name}")
 
     if args.push:
-        mac = cfg.get("ble", {}).get("mac", "")
-        if not mac:
-            print("[!] Set [ble].mac in config.toml first.", file=sys.stderr)
+        oepl_cfg = cfg.get("oepl", {})
+        ap_url = oepl_cfg.get("ap_url", "")
+        mac = oepl_cfg.get("tag_mac", "")
+        if not ap_url or not mac:
+            print("[!] Set [oepl].ap_url and [oepl].tag_mac in config.toml first.", file=sys.stderr)
             return 3
-        from ble import push_blocking
+        from oepl import push, OEPLError
         try:
-            push_blocking(img, mac)
-            print(f"Pushed to {mac}.")
-        except NotImplementedError as e:
+            push(img, ap_url=ap_url, mac=mac, dither=args.dither)
+            print(f"Pushed to {mac} via {ap_url}.")
+        except OEPLError as e:
             print(f"[!] {e}", file=sys.stderr)
             return 4
 

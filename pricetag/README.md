@@ -1,78 +1,89 @@
 # pricetag
 
-把 Claude 用量渲染成黑/白/红三色图，推到一块刷了开源固件的汉朔 Nebular 价签（420R-N，4.2" BWR）上。
+把 Claude 用量渲染成黑/白/红三色图，推到一块刷了 OpenEPaperLink 固件的汉朔 Nebular 420R-N 价签上。
 
 预览：`examples/preview.png`
 
+## 架构
+
+```
+[你 PC]
+   │  HTTP POST /imgupload
+   ▼
+[ESP32-S3 AP]   ← OpenEPaperLink 固件
+   │  BLE
+   ▼
+[价签]          ← OEPL TLSR 固件（不是 atc1441 ATC_Paper.bin）
+```
+
+理由：atc1441 的 BLE 固件没有 Nebular 4.2" BWR 的屏驱，OEPL 才支持。OEPL 用 ESP32 当
+AP，PC 走 HTTP 推图。
+
 ## 当前状态
 
-- **渲染**：三色 (黑/白/红)，`python3 main.py --mock` 出图。Title 用红色，进度条 ≥ 80% 时填红示警。
-- **数据**：`ccusage statusline --json` 取真实用量；不可用时用 `--mock`。
-- **吉祥物**：右上角有 8 角 Anthropic-mark 占位 sparkle。**把任意 PNG 放到 `assets/mascot.png`，渲染会自动用你的**（带透明通道也行）。
-- **BLE 推送**：还没接。等价签刷完 [atc1441 固件](https://github.com/atc1441/ATC_TLSR_Paper) 拿到 MAC 之后补——`ble.py` 里有说明。
+- **渲染**：三色 (黑/白/红)，`python3 main.py --mock` 出图。
+- **数据**：`ccusage statusline --json` 或 `--mock`。
+- **吉祥物**：8 角 Anthropic sparkle 占位，自带 `assets/mascot.png` 槽位。
+- **推送**：HTTP POST 到 OEPL AP 的 `/imgupload` 接口。
+- **硬件**：见 `HARDWARE.md`（接线 + 刷机步骤）。
 
 ## 跑一下
 
 ```bash
-pip install -r requirements.txt          # pillow, bleak
-python3 main.py --mock                    # mock 数据
+pip install -r requirements.txt          # 只需 pillow（push 走 stdlib urllib）
+python3 main.py --mock                    # 渲染 mock 数据
 python3 main.py                           # 真实 ccusage
-python3 main.py --save my.png             # 改输出路径
+python3 main.py --push                    # 推到价签（需配好 config.toml）
+python3 main.py --push --dither           # 启用 AP 抖动（拍照风格用）
 ```
 
 输出三个文件：
 
-- `tag.png` — RGB 预览（你看效果用）
-- `tag_bw.png` — 1-bit 黑通道（给 BWR 固件用）
-- `tag_red.png` — 1-bit 红通道（给 BWR 固件用）
+- `tag.png` — RGB 预览
+- `tag_bw.png` — 黑通道（参考用，OEPL AP 自己会再次处理）
+- `tag_red.png` — 红通道
 
-复制 `config.example.toml` → `config.toml` 调标题、序列号、字体、mascot 路径。
+## 配置
 
-## 字体
+复制 `config.example.toml` → `config.toml`：
 
-macOS 默认：
+```toml
+[oepl]
+ap_url  = "http://192.168.1.42"  # ESP32-S3 AP 的 IP
+tag_mac = "00000197E5CB3B38"     # 价签 MAC（在 AP web UI 里看）
 
-- CJK：`/System/Library/Fonts/PingFang.ttc`
-- 等宽：`/System/Library/Fonts/Menlo.ttc`
-
-其他系统改 `[fonts]`，Linux 自带 fallback。
-
-## 换吉祥物
-
-```bash
-# 把任意 PNG 丢进去
-cp ~/Downloads/my-mascot.png assets/mascot.png
-python3 main.py --mock
+[fonts]
+cjk  = "/System/Library/Fonts/PingFang.ttc"   # 或 C:/Windows/Fonts/msyh.ttc
+mono = "/System/Library/Fonts/Menlo.ttc"      # 或 C:/Windows/Fonts/consola.ttf
 ```
-
-会自动缩放到 48×48 贴左上角。透明背景效果最好。
 
 ## 文件
 
 ```
 main.py                # CLI 入口
-usage.py               # 取 ccusage 数据 + mock 兜底
-render.py              # PIL 三色画图 + BW/Red 通道拆分
-ble.py                 # 推送骨架（TODO）
+usage.py               # ccusage + mock 兜底
+render.py              # 三色 PIL 画图 + BW/Red 通道拆分
+oepl.py                # HTTP POST 到 OEPL AP
 config.example.toml    # 默认配置
-assets/mascot.png      # 可选，你的吉祥物图
+HARDWARE.md            # 接线、刷机步骤
+docs/wiring_official.jpg  # atc1441 官方接线图
+assets/mascot.png      # 可选吉祥物（用户提供）
 examples/preview.png   # 渲染预览
 ```
 
 ## 还要做的事
 
-1. **刷固件**（你已下单工具，等货）
-2. **拆机拍 PCB 照片** → 我帮你标 SWS / NRST / GND
-3. **焊飞线 → Chrome 跑 [UART Flasher](https://atc1441.github.io/ATC_TLSR_Paper_UART_Flasher.html) → 刷 OEPL/BWR 固件**（接线见 `HARDWARE.md`）
-4. **拿到 BLE MAC**，填 `config.toml` 的 `[ble].mac`
-5. **照 atc1441 的 `Image_Uploader.html` 把 BLE 协议补到 `ble.py`**
-6. **可选**：起个 launchd 每 10 分钟跑一次
+1. **采购**：USB-TTL ✅、烙铁 ✅、ESP32-S3-N16R8 ⏳
+2. **刷价签**：UART Flasher + OEPL TLSR 固件（不是 atc1441 那个 .bin）
+3. **刷 ESP32**：[install.openepaperlink.de](https://install.openepaperlink.de/) → 选 BLE-only S3 build
+4. **配 WiFi**：ESP32 起 AP 网络 `OpenEPaperLink`，连上去配你家 WiFi
+5. **配对**：价签自动被 AP 发现，记下 AP 的 IP 和 价签的 MAC
+6. **填 `config.toml`**，跑 `python3 main.py --push`
 
-## Nebular-420R-N 默认假设
+## Nebular-420R-N 假设
 
-- 4.2" e-paper, 400×300
-- BWR (黑/白/红)
-- TLSR8359 主控
-- NFC 是辅助通道（提供 BLE MAC 而已），数据走 BLE
+- 4.2" e-paper, 400×300, BWR
+- TLSR8258（已通过 PCB 印字确认）
+- 装回去后能闲鱼买的硬件配置
 
-实际拆开看到不对劲再调 `[display]`。
+实际拆开发现不对劲再调 `[display]` 尺寸。
