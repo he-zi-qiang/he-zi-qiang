@@ -6,9 +6,9 @@
 
 - 🔭 I’m currently working on DJTU
 - 🌱 I’m currently learning software
-- 👯 I’m looking to collaborate on hangzhou
+- 👯 I’m looking to collaborate on Shanghai
 - 🤔 I’m looking for help with sutdying
-- 💬 Ask me about music
+  
 
 ***
 ### :hammer:  Skills and Tools
